@@ -4,234 +4,215 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>マウス認証研究 | データ収集</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script src="app.js"></script>
 </head>
 <body>
 
-<!-- ================================================
-     PAGE 1: Landing
-================================================ -->
+<!-- PAGE 1: トップ -->
 <section class="page active" id="page-landing">
     <header class="header">
-        <span class="header-tag">RESEARCH</span>
-        <span class="header-title">マウス行動バイオメトリクス 研究用データ収集</span>
-        <span class="header-right" id="clock">--:--:--</span>
+        <span class="badge">RESEARCH</span>
+        <span class="header-title">マウス行動バイオメトリクス データ収集</span>
+        <span class="header-right" id="clock"></span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
-    <div class="landing-body">
-        <div class="eyebrow">BEHAVIORAL BIOMETRICS</div>
-        <div class="big-title">
-            マウス操作で<br>
-            <span class="accent">個人認証</span>できるか
-        </div>
-        <p class="subtitle">
-            // このサイトは、マウスカーソルの動き・速度・クリックパターンを記録し<br>
-            個人識別の可能性を検証するための研究用データ収集ツールです
-        </p>
+    <div class="progress"><div class="progress-bar" style="width:0%"></div></div>
+
+    <div class="content">
+        <h1>マウス操作で<br>個人認証できるか</h1>
+        <p>マウスカーソルの動き・速度・クリックパターンを記録し、個人識別の可能性を検証するためのデータ収集です。</p>
+
         <div class="info-grid">
             <div class="info-cell">
-                <span class="info-label">TASK 01</span>
-                <span class="info-value">的当て</span>
+                <div class="info-label">TASK 01</div>
+                <div class="info-value">的当て</div>
             </div>
             <div class="info-cell">
-                <span class="info-label">TASK 02</span>
-                <span class="info-value">自由操作</span>
+                <div class="info-label">TASK 02</div>
+                <div class="info-value">自由操作</div>
             </div>
             <div class="info-cell">
-                <span class="info-label">所要時間</span>
-                <span class="info-value">約3分</span>
+                <div class="info-label">所要時間</div>
+                <div class="info-value">約3分</div>
             </div>
         </div>
+
         <div class="form-group">
-            <label class="form-label" for="pid-input">// 被験者ID を入力してください（名前不要・番号や記号でOK）</label>
-            <input
-                type="text"
-                class="form-input"
-                id="pid-input"
-                placeholder="例: 001 / student_A / S01"
-                maxlength="30"
-                autocomplete="off"
-            >
+            <label class="form-label" for="pid-input">被験者ID（名前不要・番号や記号でOK）</label>
+            <input type="text" class="form-input" id="pid-input"
+                placeholder="例: 001 / student_A" maxlength="30" autocomplete="off">
         </div>
+
         <button class="btn" onclick="startExperiment()">実験を開始する →</button>
     </div>
 </section>
 
-<!-- ================================================
-     PAGE 2: Target Task Instructions
-================================================ -->
+
+<!-- PAGE 2: 的当て 説明 -->
 <section class="page" id="page-target-intro">
     <header class="header">
-        <span class="header-tag">TASK 01</span>
+        <span class="badge">TASK 01</span>
         <span class="header-title">的当てタスク — 説明</span>
         <span class="header-right" id="pid-label-1"></span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
-    <div class="instructions-body">
-        <div class="inst-header">
-            <span class="task-badge">TASK 01 / 02</span>
-            <div class="inst-title">的当てタスク</div>
-        </div>
+    <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
+
+    <div class="content">
+        <h2>的当てタスク</h2>
+
         <div class="steps">
             <div class="step">
                 <span class="step-num">01</span>
-                <span class="step-text">画面上に <strong>丸いターゲット（的）</strong> が表示されます。</span>
+                <span class="step-text">画面上に丸いターゲットが表示されます。</span>
             </div>
             <div class="step">
                 <span class="step-num">02</span>
-                <span class="step-text">ターゲットを <strong>できるだけ素早く正確にクリック</strong> してください。</span>
+                <span class="step-text">できるだけ素早く正確にクリックしてください。</span>
             </div>
             <div class="step">
                 <span class="step-num">03</span>
-                <span class="step-text">クリックすると次のターゲットが表示されます。<strong>合計20回</strong>で終了します。</span>
+                <span class="step-text">クリックすると次のターゲットが出ます。合計 20回 で終了します。</span>
             </div>
             <div class="step">
                 <span class="step-num">04</span>
-                <span class="step-text">マウスの <strong>軌跡・速度・クリック位置</strong> を記録します。</span>
+                <span class="step-text">マウスの軌跡・速度・クリック位置を記録します。</span>
             </div>
         </div>
+
         <button class="btn" onclick="startTargetTask()">タスク開始 →</button>
     </div>
 </section>
 
-<!-- ================================================
-     PAGE 3: Target Task (Active)
-================================================ -->
+
+<!-- PAGE 3: 的当て 実行 -->
 <section class="page" id="page-target">
     <header class="header">
-        <span class="header-tag" style="color:#f43f5e;border-color:#f43f5e;background:rgba(244,63,94,0.1)">● REC</span>
+        <span class="badge rec">● REC</span>
         <span class="header-title">的当てタスク 実行中</span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:50%"></div></div>
+    <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+
     <div class="task-area" id="target-area">
         <div class="task-hud">
             <div class="hud-stat">
-                <span class="hud-label">残りターゲット</span>
-                <span class="hud-value" id="remaining">20</span>
+                <div class="hud-label">残り</div>
+                <div class="hud-value" id="remaining">20</div>
             </div>
             <div class="hud-stat">
-                <span class="hud-label">クリック数</span>
-                <span class="hud-value" id="clicked">0</span>
+                <div class="hud-label">クリック</div>
+                <div class="hud-value" id="clicked">0</div>
             </div>
             <div class="hud-stat">
-                <span class="hud-label">記録ポイント</span>
-                <span class="hud-value" id="rec-pts">0</span>
+                <div class="hud-label">記録数</div>
+                <div class="hud-value" id="rec-pts">0</div>
             </div>
         </div>
         <canvas class="trail-canvas" id="target-canvas"></canvas>
     </div>
 </section>
 
-<!-- ================================================
-     PAGE 4: Free Task Instructions
-================================================ -->
+
+<!-- PAGE 4: 自由操作 説明 -->
 <section class="page" id="page-free-intro">
     <header class="header">
-        <span class="header-tag">TASK 02</span>
+        <span class="badge">TASK 02</span>
         <span class="header-title">自由操作タスク — 説明</span>
         <span class="header-right" id="pid-label-2"></span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:62%"></div></div>
-    <div class="instructions-body">
-        <div class="inst-header">
-            <span class="task-badge">TASK 02 / 02</span>
-            <div class="inst-title">自由操作タスク</div>
-        </div>
+    <div class="progress"><div class="progress-bar" style="width:62%"></div></div>
+
+    <div class="content">
+        <h2>自由操作タスク</h2>
+
         <div class="steps">
             <div class="step">
                 <span class="step-num">01</span>
-                <span class="step-text">エリア内で <strong>自由にマウスを動かして</strong> ください。決まった動きはありません。</span>
+                <span class="step-text">エリア内で自由にマウスを動かしてください。決まった動きはありません。</span>
             </div>
             <div class="step">
                 <span class="step-num">02</span>
-                <span class="step-text">クリックしても構いません。<strong>自然な操作</strong>をしてください。</span>
+                <span class="step-text">クリックしても構いません。自然な操作をしてください。</span>
             </div>
             <div class="step">
                 <span class="step-num">03</span>
-                <span class="step-text"><strong>30秒間</strong> 記録します。タイマーが終わると自動で次へ進みます。</span>
-            </div>
-            <div class="step">
-                <span class="step-num">04</span>
-                <span class="step-text">あなたの <strong>自然なマウス操作の癖</strong> を捉えることが目的です。</span>
+                <span class="step-text">30秒間 記録します。タイマーが終わると自動で次へ進みます。</span>
             </div>
         </div>
+
         <button class="btn" onclick="startFreeTask()">タスク開始 →</button>
     </div>
 </section>
 
-<!-- ================================================
-     PAGE 5: Free Task (Active)
-================================================ -->
+
+<!-- PAGE 5: 自由操作 実行 -->
 <section class="page" id="page-free">
     <header class="header">
-        <span class="header-tag" style="color:#f43f5e;border-color:#f43f5e;background:rgba(244,63,94,0.1)">● REC</span>
+        <span class="badge rec">● REC</span>
         <span class="header-title">自由操作タスク 実行中</span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:83%"></div></div>
+    <div class="progress"><div class="progress-bar" style="width:83%"></div></div>
+
     <div class="free-body">
-        <div class="free-hud">
-            <span>// エリア内でマウスを自由に動かしてください</span>
-            <span class="timer-display" id="timer-text">30s</span>
+        <div class="free-meta">
+            <span>エリア内でマウスを自由に動かしてください</span>
+            <span class="timer-text" id="timer-text">30s</span>
         </div>
         <div class="timer-track">
             <div class="timer-fill" id="timer-fill" style="width:100%"></div>
         </div>
         <div class="free-area" id="free-area">
             <canvas class="trail-canvas" id="free-canvas"></canvas>
-            <div class="free-placeholder">
-                <div class="big-countdown" id="big-countdown">30</div>
-                <div class="hint">// マウスをエリア内で動かしてください</div>
+            <div class="free-hint">
+                <div class="free-countdown" id="big-countdown">30</div>
+                <div class="free-hint-text">マウスをエリア内で動かしてください</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- ================================================
-     PAGE 6: Complete
-================================================ -->
+
+<!-- PAGE 6: 完了 -->
 <section class="page" id="page-complete">
     <header class="header">
-        <span class="header-tag">COMPLETE</span>
+        <span class="badge">COMPLETE</span>
         <span class="header-title">データ収集完了</span>
     </header>
-    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
-    <div class="complete-body">
-        <div class="check-icon">✓</div>
-        <div class="complete-title">収集<span class="accent">完了</span>！</div>
+    <div class="progress"><div class="progress-bar" style="width:100%"></div></div>
+
+    <div class="content">
+        <div class="check-mark">✓</div>
+        <h2>収集完了！</h2>
+
         <div class="data-grid">
             <div class="data-cell">
-                <div class="data-cell-label">PARTICIPANT ID</div>
-                <div class="data-cell-value" id="sum-pid">—</div>
+                <div class="data-label">被験者ID</div>
+                <div class="data-value" id="sum-pid">—</div>
             </div>
             <div class="data-cell">
-                <div class="data-cell-label">SESSION ID</div>
-                <div class="data-cell-value" id="sum-sid">—</div>
+                <div class="data-label">セッションID</div>
+                <div class="data-value" id="sum-sid">—</div>
             </div>
             <div class="data-cell">
-                <div class="data-cell-label">総記録ポイント</div>
-                <div class="data-cell-value" id="sum-pts">—</div>
+                <div class="data-label">総記録ポイント</div>
+                <div class="data-value" id="sum-pts">—</div>
             </div>
             <div class="data-cell">
-                <div class="data-cell-label">的当てクリック数</div>
-                <div class="data-cell-value" id="sum-clicks">—</div>
+                <div class="data-label">的当てクリック数</div>
+                <div class="data-value" id="sum-clicks">—</div>
             </div>
         </div>
-        <div class="notice-box">
-            <strong>// 次のステップ</strong><br>
+
+        <div class="notice">
             CSVファイルをダウンロードして、研究者にメール・LINEで送ってください。<br>
-            ファイル名はそのままにしておいてください。<br>
-            もう一度実験する場合は「別セッションを記録」をクリックしてください。
+            ファイル名はそのままにしておいてください。
         </div>
+
         <div class="btn-row">
             <button class="btn" onclick="downloadCSV()">CSVをダウンロード ↓</button>
-            <button class="btn-ghost" onclick="location.reload()">別セッションを記録する →</button>
+            <button class="btn-outline" onclick="location.reload()">別セッションを記録する →</button>
         </div>
     </div>
 </section>
 
-
-</script>
+<script src="app.js"></script>
 </body>
 </html>
