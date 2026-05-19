@@ -3,122 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>マウス認証システム</title>
+    <title>マウス認証研究 | データ収集</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- ==============================
-     VIEW: ホーム
-============================== -->
-<div class="view active" id="view-home">
+<!-- PAGE 1: トップ -->
+<section class="page active" id="page-landing">
     <header class="header">
-        <span class="badge">MOUSE AUTH</span>
-        <span class="header-title">マウス操作 個人認証システム</span>
+        <span class="badge">RESEARCH</span>
+        <span class="header-title">マウス行動バイオメトリクス データ収集</span>
+        <span class="header-right" id="clock"></span>
     </header>
+    <div class="progress"><div class="progress-bar" style="width:0%"></div></div>
 
     <div class="content">
-        <h1>マウス操作で<br>あなたを特定する</h1>
-        <p>収集したCSVデータを登録してデータベースを作り、<br>未知のデータが誰のものか特定します。</p>
+        <h1>マウス操作で<br>個人認証できるか</h1>
+        <p>マウスカーソルの動き・速度・クリックパターンを記録し、個人識別の可能性を検証するためのデータ収集です。</p>
 
-        <div class="card-grid">
-            <div class="card" onclick="showView('view-register')">
-                <div class="card-icon">＋</div>
-                <div class="card-title">被験者を登録する</div>
-                <div class="card-desc">CSVファイルをアップロードしてデータベースに追加</div>
-                <div class="card-count" id="home-count">登録済み: 0人</div>
+        <div class="info-grid">
+            <div class="info-cell">
+                <div class="info-label">TASK 01</div>
+                <div class="info-value">的当て</div>
             </div>
-            <div class="card" onclick="showView('view-auth')">
-                <div class="card-icon">？</div>
-                <div class="card-title">誰か特定する</div>
-                <div class="card-desc">未知のCSVをアップロードして誰か判定</div>
-                <div class="card-count">登録が1人以上必要</div>
+            <div class="info-cell">
+                <div class="info-label">TASK 02</div>
+                <div class="info-value">自由操作</div>
+            </div>
+            <div class="info-cell">
+                <div class="info-label">所要時間</div>
+                <div class="info-value">約3分</div>
             </div>
         </div>
 
-        <div class="db-status" id="db-status" style="display:none">
-            <div class="db-status-title">登録済み被験者</div>
-            <div id="db-list" class="db-list"></div>
-            <button class="btn-danger" onclick="clearDatabase()">データベースをリセット</button>
+        <div class="form-group">
+            <label class="form-label" for="pid-input">被験者ID（名前不要・番号や記号でOK）</label>
+            <input type="text" class="form-input" id="pid-input"
+                placeholder="例: 001 / student_A" maxlength="30" autocomplete="off">
         </div>
+
+        <button class="btn" onclick="startExperiment()">実験を開始する →</button>
     </div>
-</div>
+</section>
 
 
-<!-- ==============================
-     VIEW: 登録
-============================== -->
-<div class="view" id="view-register">
+<!-- PAGE 2: 的当て 説明 -->
+<section class="page" id="page-target-intro">
     <header class="header">
-        <button class="back-btn" onclick="showView('view-home')">← 戻る</button>
-        <span class="badge">REGISTER</span>
-        <span class="header-title">被験者を登録</span>
+        <span class="badge">TASK 01</span>
+        <span class="header-title">的当てタスク — 説明</span>
+        <span class="header-right" id="pid-label-1"></span>
     </header>
+    <div class="progress"><div class="progress-bar" style="width:25%"></div></div>
 
     <div class="content">
-        <h2>CSVファイルをアップロード</h2>
-        <p>データ収集サイトでダウンロードしたCSVをアップロードしてください。<br>同じ被験者のファイルを複数まとめて選択できます。</p>
+        <h2>的当てタスク</h2>
 
-        <div class="upload-area" id="upload-area-register"
-            ondragover="event.preventDefault()"
-            ondrop="handleDrop(event, 'register')">
-            <div class="upload-icon">↑</div>
-            <div class="upload-text">クリックまたはドラッグ＆ドロップ</div>
-            <div class="upload-sub">mouse_ID_SESSION.csv</div>
-            <input type="file" id="file-input-register" accept=".csv" multiple
-                style="display:none" onchange="handleFiles(this.files, 'register')">
+        <div class="steps">
+            <div class="step">
+                <span class="step-num">01</span>
+                <span class="step-text">画面上に丸いターゲットが表示されます。</span>
+            </div>
+            <div class="step">
+                <span class="step-num">02</span>
+                <span class="step-text">できるだけ素早く正確にクリックしてください。</span>
+            </div>
+            <div class="step">
+                <span class="step-num">03</span>
+                <span class="step-text">クリックすると次のターゲットが出ます。合計 20回 で終了します。</span>
+            </div>
+            <div class="step">
+                <span class="step-num">04</span>
+                <span class="step-text">マウスの軌跡・速度・クリック位置を記録します。</span>
+            </div>
         </div>
 
-        <div id="register-result" class="result-box" style="display:none"></div>
-
-        <button class="btn" onclick="document.getElementById('file-input-register').click()">
-            ファイルを選択
-        </button>
+        <button class="btn" onclick="startTargetTask()">タスク開始 →</button>
     </div>
-</div>
+</section>
 
 
-<!-- ==============================
-     VIEW: 認証
-============================== -->
-<div class="view" id="view-auth">
+<!-- PAGE 3: 的当て 実行 -->
+<section class="page" id="page-target">
     <header class="header">
-        <button class="back-btn" onclick="showView('view-home')">← 戻る</button>
-        <span class="badge">AUTH</span>
-        <span class="header-title">誰か特定する</span>
+        <span class="badge rec">● REC</span>
+        <span class="header-title">的当てタスク 実行中</span>
     </header>
+    <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+
+    <div class="task-area" id="target-area">
+        <div class="task-hud">
+            <div class="hud-stat">
+                <div class="hud-label">残り</div>
+                <div class="hud-value" id="remaining">20</div>
+            </div>
+            <div class="hud-stat">
+                <div class="hud-label">クリック</div>
+                <div class="hud-value" id="clicked">0</div>
+            </div>
+            <div class="hud-stat">
+                <div class="hud-label">記録数</div>
+                <div class="hud-value" id="rec-pts">0</div>
+            </div>
+        </div>
+        <canvas class="trail-canvas" id="target-canvas"></canvas>
+    </div>
+</section>
+
+
+<!-- PAGE 4: 自由操作 説明 -->
+<section class="page" id="page-free-intro">
+    <header class="header">
+        <span class="badge">TASK 02</span>
+        <span class="header-title">自由操作タスク — 説明</span>
+        <span class="header-right" id="pid-label-2"></span>
+    </header>
+    <div class="progress"><div class="progress-bar" style="width:62%"></div></div>
 
     <div class="content">
-        <h2>未知のCSVをアップロード</h2>
-        <p>誰のものか分からないCSVファイルをアップロードしてください。<br>データベースと比較して最も近い人物を特定します。</p>
+        <h2>自由操作タスク</h2>
 
-        <div class="upload-area" id="upload-area-auth"
-            ondragover="event.preventDefault()"
-            ondrop="handleDrop(event, 'auth')">
-            <div class="upload-icon">↑</div>
-            <div class="upload-text">クリックまたはドラッグ＆ドロップ</div>
-            <div class="upload-sub">判定したいCSVファイル</div>
-            <input type="file" id="file-input-auth" accept=".csv"
-                style="display:none" onchange="handleFiles(this.files, 'auth')">
+        <div class="steps">
+            <div class="step">
+                <span class="step-num">01</span>
+                <span class="step-text">エリア内で自由にマウスを動かしてください。決まった動きはありません。</span>
+            </div>
+            <div class="step">
+                <span class="step-num">02</span>
+                <span class="step-text">クリックしても構いません。自然な操作をしてください。</span>
+            </div>
+            <div class="step">
+                <span class="step-num">03</span>
+                <span class="step-text">30秒間 記録します。タイマーが終わると自動で次へ進みます。</span>
+            </div>
         </div>
 
-        <div id="auth-result" style="display:none">
-            <!-- 判定結果 -->
-            <div class="result-verdict" id="result-verdict"></div>
-
-            <!-- スコア一覧 -->
-            <div class="score-list" id="score-list"></div>
-
-            <!-- 特徴量比較 -->
-            <div class="feature-compare" id="feature-compare"></div>
-        </div>
-
-        <button class="btn" onclick="document.getElementById('file-input-auth').click()">
-            ファイルを選択
-        </button>
+        <button class="btn" onclick="startFreeTask()">タスク開始 →</button>
     </div>
-</div>
+</section>
 
-<script src="auth.js"></script>
+
+<!-- PAGE 5: 自由操作 実行 -->
+<section class="page" id="page-free">
+    <header class="header">
+        <span class="badge rec">● REC</span>
+        <span class="header-title">自由操作タスク 実行中</span>
+    </header>
+    <div class="progress"><div class="progress-bar" style="width:83%"></div></div>
+
+    <div class="free-body">
+        <div class="free-meta">
+            <span>エリア内でマウスを自由に動かしてください</span>
+            <span class="timer-text" id="timer-text">30s</span>
+        </div>
+        <div class="timer-track">
+            <div class="timer-fill" id="timer-fill" style="width:100%"></div>
+        </div>
+        <div class="free-area" id="free-area">
+            <canvas class="trail-canvas" id="free-canvas"></canvas>
+            <div class="free-hint">
+                <div class="free-countdown" id="big-countdown">30</div>
+                <div class="free-hint-text">マウスをエリア内で動かしてください</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- PAGE 6: 完了 -->
+<section class="page" id="page-complete">
+    <header class="header">
+        <span class="badge">COMPLETE</span>
+        <span class="header-title">データ収集完了</span>
+    </header>
+    <div class="progress"><div class="progress-bar" style="width:100%"></div></div>
+
+    <div class="content">
+        <div class="check-mark">✓</div>
+        <h2>収集完了！</h2>
+
+        <div class="data-grid">
+            <div class="data-cell">
+                <div class="data-label">被験者ID</div>
+                <div class="data-value" id="sum-pid">—</div>
+            </div>
+            <div class="data-cell">
+                <div class="data-label">セッションID</div>
+                <div class="data-value" id="sum-sid">—</div>
+            </div>
+            <div class="data-cell">
+                <div class="data-label">総記録ポイント</div>
+                <div class="data-value" id="sum-pts">—</div>
+            </div>
+            <div class="data-cell">
+                <div class="data-label">的当てクリック数</div>
+                <div class="data-value" id="sum-clicks">—</div>
+            </div>
+        </div>
+
+        <div class="notice">
+            CSVファイルをダウンロードして、研究者にメール・LINEで送ってください。<br>
+            ファイル名はそのままにしておいてください。
+        </div>
+
+        <div class="btn-row">
+            <button class="btn" onclick="downloadCSV()">CSVをダウンロード ↓</button>
+            <button class="btn-outline" onclick="location.reload()">別セッションを記録する →</button>
+        </div>
+    </div>
+</section>
+
+<script src="app.js"></script>
 </body>
 </html>
