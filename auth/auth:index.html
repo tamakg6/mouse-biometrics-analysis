@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マウス認証システム</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ==============================
+     VIEW: ホーム
+============================== -->
+<div class="view active" id="view-home">
+    <header class="header">
+        <span class="badge">MOUSE AUTH</span>
+        <span class="header-title">マウス操作 個人認証システム</span>
+    </header>
+
+    <div class="content">
+        <h1>マウス操作で<br>あなたを特定する</h1>
+        <p>収集したCSVデータを登録してデータベースを作り、<br>未知のデータが誰のものか特定します。</p>
+
+        <div class="card-grid">
+            <div class="card" onclick="showView('view-register')">
+                <div class="card-icon">＋</div>
+                <div class="card-title">被験者を登録する</div>
+                <div class="card-desc">CSVファイルをアップロードしてデータベースに追加</div>
+                <div class="card-count" id="home-count">登録済み: 0人</div>
+            </div>
+            <div class="card" onclick="showView('view-auth')">
+                <div class="card-icon">？</div>
+                <div class="card-title">誰か特定する</div>
+                <div class="card-desc">未知のCSVをアップロードして誰か判定</div>
+                <div class="card-count">登録が1人以上必要</div>
+            </div>
+        </div>
+
+        <div class="db-status" id="db-status" style="display:none">
+            <div class="db-status-title">登録済み被験者</div>
+            <div id="db-list" class="db-list"></div>
+            <button class="btn-danger" onclick="clearDatabase()">データベースをリセット</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- ==============================
+     VIEW: 登録
+============================== -->
+<div class="view" id="view-register">
+    <header class="header">
+        <button class="back-btn" onclick="showView('view-home')">← 戻る</button>
+        <span class="badge">REGISTER</span>
+        <span class="header-title">被験者を登録</span>
+    </header>
+
+    <div class="content">
+        <h2>CSVファイルをアップロード</h2>
+        <p>データ収集サイトでダウンロードしたCSVをアップロードしてください。<br>同じ被験者のファイルを複数まとめて選択できます。</p>
+
+        <div class="upload-area" id="upload-area-register"
+            ondragover="event.preventDefault()"
+            ondrop="handleDrop(event, 'register')">
+            <div class="upload-icon">↑</div>
+            <div class="upload-text">クリックまたはドラッグ＆ドロップ</div>
+            <div class="upload-sub">mouse_ID_SESSION.csv</div>
+            <input type="file" id="file-input-register" accept=".csv" multiple
+                style="display:none" onchange="handleFiles(this.files, 'register')">
+        </div>
+
+        <div id="register-result" class="result-box" style="display:none"></div>
+
+        <button class="btn" onclick="document.getElementById('file-input-register').click()">
+            ファイルを選択
+        </button>
+    </div>
+</div>
+
+
+<!-- ==============================
+     VIEW: 認証
+============================== -->
+<div class="view" id="view-auth">
+    <header class="header">
+        <button class="back-btn" onclick="showView('view-home')">← 戻る</button>
+        <span class="badge">AUTH</span>
+        <span class="header-title">誰か特定する</span>
+    </header>
+
+    <div class="content">
+        <h2>未知のCSVをアップロード</h2>
+        <p>誰のものか分からないCSVファイルをアップロードしてください。<br>データベースと比較して最も近い人物を特定します。</p>
+
+        <div class="upload-area" id="upload-area-auth"
+            ondragover="event.preventDefault()"
+            ondrop="handleDrop(event, 'auth')">
+            <div class="upload-icon">↑</div>
+            <div class="upload-text">クリックまたはドラッグ＆ドロップ</div>
+            <div class="upload-sub">判定したいCSVファイル</div>
+            <input type="file" id="file-input-auth" accept=".csv"
+                style="display:none" onchange="handleFiles(this.files, 'auth')">
+        </div>
+
+        <div id="auth-result" style="display:none">
+            <!-- 判定結果 -->
+            <div class="result-verdict" id="result-verdict"></div>
+
+            <!-- スコア一覧 -->
+            <div class="score-list" id="score-list"></div>
+
+            <!-- 特徴量比較 -->
+            <div class="feature-compare" id="feature-compare"></div>
+        </div>
+
+        <button class="btn" onclick="document.getElementById('file-input-auth').click()">
+            ファイルを選択
+        </button>
+    </div>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>
